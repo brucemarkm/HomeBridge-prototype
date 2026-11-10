@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: false,
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: process.env.HB_TEST_BASE_URL || "http://127.0.0.1:3100",
     headless: true,
     launchOptions: {
       executablePath:
@@ -14,8 +14,8 @@ export default defineConfig({
     },
   },
   webServer: {
-    command: "npm run dev",
-    url: "http://127.0.0.1:3000",
+    command: "npm run dev -- --port 3100",
+    url: process.env.HB_TEST_BASE_URL || "http://127.0.0.1:3100",
     reuseExistingServer: true,
     timeout: 120000,
   },

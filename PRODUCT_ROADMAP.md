@@ -1,19 +1,17 @@
-# Product roadmap
+# Buyer-first roadmap
 
-## Phase 1 — Buyer-focused demonstration (implemented core)
+## Implemented core beta
 
-Public site, fictional collection, discovery, saving/comparison, manual import, browser-based demo roles, buyer onboarding/dashboard, scripted guidance, simulated purchases, checklists, messages, documents, agent/admin workspaces, and financial tools.
+A unified home-import/analysis/payment/draft/PDF/review journey. Four rich fictional scenarios, property-specific conversations, opt-in preference memory, typed provider boundaries, server OpenAI path, Supabase auth/private sync path, durable request quotas, original PDFs, fixed review snapshots, simulated reviewer changes, and a clear buyer workspace.
 
-Next refinements: more tailored property imagery and galleries, saved filter presets, individual conversations per client, more complete offer worksheets, document-review controls, task assignment/due-date editing, and additional usability/accessibility testing. Package management, editable workflow templates/homepage text, and arbitrary team-member management are not implemented.
+## Next: verify optional integrations
 
-## Phase 2 — Real brokerage integration
+Use isolated test services to verify Supabase email/Google sign-in and multi-user RLS, live model grounding/fair-housing behavior, per-property consent and request budgets, and a genuinely licensed RESO provider. Validate provider search fields, media/attribution terms, updates/deletions, and any authorized URL resolver. Do not enable a fake live feed or scraper to fill the gap.
 
-Engage a licensed brokerage and legal/compliance reviewers. Establish broker-approved Utah workflows and current forms. Implement real authentication, persistent database migrations, user/agent authorization, secure documents, immutable event histories, and professional approval gates. Replace all fictional profiles before offering services. Deploying this demo does not complete this phase.
+## Then: real professional collaboration
 
-## Phase 3 — Authorized data and enhanced assistance
+Verify professional identity, licensing, brokerage arrangements, and scope of service. Add explicit agent-client assignments, server-side participant authorization, relational conversations/reviews/documents, immutable audit records, retention controls, and approved legal forms. Keep draft preparation separate from actual submission and signatures. Connect delivery and approved signature services only after these foundations are reviewed.
 
-Contract for legitimate property-data access. Implement provider-backed search/import, server-side grounded AI with budgets/rate limits, notifications, consultations, and controlled document explanations. Connect production services only after credential, privacy, security, and operational review. Never scrape listing sites without authorization.
+## Refinement
 
-## Phase 4 — Seller services and expansion
-
-Research seller needs, approved listing workflows, pricing support, showing coordination, and offer comparison. Validate unit economics, licensing, and local requirements before entering additional markets. The current seller experience is a coming-soon concept only.
+Usability sessions with first-time buyers and brokers, broader accessibility audits, more precise live-data source evidence, international PDF typography, provider-scale maps, concurrency/conflict handling, and normalized database entities. Improve supported data coverage only within licensed rights. No seller functionality is included in this buyer-focused phase.

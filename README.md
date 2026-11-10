@@ -1,84 +1,97 @@
-# Homebridge
+# Homebridge — buyer beta
 
-**A smarter, simpler way home.** A polished, interactive homebuying concept built with Next.js App Router, React, strict TypeScript, Lucide icons, and custom responsive CSS. Everything runs in demo mode without paid APIs, accounts, a database, or external runtime services.
+**Buy a home. Skip the complexity.** Homebridge connects a listing the buyer has already found to property-specific guidance, affordability, confirmed draft terms, downloadable preparation PDFs, and a simulated professional review.
 
-This is a demonstration, not an operating brokerage. All addresses, agents, purchases, metrics, and pricing histories are fictional. The bundled AI-generated architectural illustrations do not depict the fictional addresses. Nothing submits offers, schedules real tours, sends emails, signs agreements, or moves money.
+Built on the existing Next.js / React / strict TypeScript project, preserving the Homebridge identity, bundled fonts, and architectural imagery. No production deployment is performed by this upgrade. Work is on `upgrade/property-advisor`, not `main`.
 
-## Preview in this cloud workspace
-
-The application is in `/workspace/HomeBridge-prototype`.
-
-1. Open a terminal for this cloud workspace.
-2. Run `cd /workspace/HomeBridge-prototype`.
-3. Run `npm run preview`. It starts the demo in the background on port 3000 or reuses the running Homebridge server. Run it again if the cloud resumes and the server has stopped.
-4. Open the cloud **Desktop** panel if your Codex interface offers it. In the cloud browser's address bar, enter `http://localhost:3000`.
-5. Click **Explore demo**, then **Enter buyer demo**. Try Agent and Brokerage Administrator from the same menu.
-
-`localhost` means the machine running the application: use the cloud browser to access the cloud server. Entering that address in your own computer's browser will not reach the cloud workspace. If your interface lacks a Desktop or port preview, use the deployment instructions below to get a shareable website address.
-
-Your computer does not host this workspace. It can be switched off. The temporary cloud workspace may eventually stop; a deployed website runs independently. Start instructions for future cloud tasks are in `.cloud/START.md`.
-
-## Run on your own computer (optional)
-
-Install Node.js 24 LTS and Git. Download/clone the project, open its folder in a terminal, then run:
+## See and try the upgrade
 
 ```sh
 npm ci
-npm run dev
+npm run dev -- --port 3100
 ```
 
-Enter `http://localhost:3000` in your browser. No `.env` file is required. Stop the server with Ctrl+C.
+Open port **3100** in your development environment's browser/port viewer. A cloud-local address is not a public website link. All core guest features run **without environment variables, paid APIs, or a database**.
 
-## A five-minute demonstration
+For a production-build rehearsal:
 
-1. On the homepage, search for **3 bedrooms in Provo under $550,000**.
-2. Save a home with the heart. Add two or three homes to **Compare**, then open the comparison tray.
-3. Open **Bring a home**. Enter a fictional address and details. A URL is optional and is never scraped or fetched.
-4. From a property, click **Start a demo purchase**. Complete personal checklist items and edit the offer discussion worksheet.
-5. Ask **Homebridge AI** about earnest money or what happens next. Responses are local, scripted demonstrations, not a live language model.
-6. Send a message in **Messages**. Switch to **Agent**, open Messages, and reply. Changes are shared among roles only in this browser.
-7. In Agent → Transactions, choose the purchase and confirm a simulated milestone. Buyers cannot use those controls from the buyer interface.
-8. Explore **Documents**, upload a non-sensitive sample TXT/PDF, view/download a sample, and acknowledge it. This is not a signature.
-9. Open **Financial tools** to adjust mortgage assumptions. Open **Pricing** to compare fees. A fee difference is not an automatic buyer refund.
-10. Switch to Administrator to see the pipeline and team, or change the fee in Business settings. Buyer Account settings offers **Reset demonstration data**.
+```sh
+npm run build
+npm start -- --port 3100
+```
 
-## What works
+Use only one server on that port. Node.js 24 is recommended; Node 22 is supported. Keep credentials out of Git. The old `.cloud/preview.mjs` helper remains available for a background production preview on port 3000; rebuild before using it after source changes.
 
-- Responsive public homepage, process, story, pricing, resources, contact demonstration, and coming-soon seller preview.
-- 28 fictional properties across seven Utah County cities; search, advanced filters, sorting, saved homes, comparison, and a schematic clickable area map.
-- Detail galleries, facts, fictional price history/comparables, approximate area coordinates, payment estimates, demo tour requests, and purchase creation.
-- Manual property entry with optional validated source URL; imported details are explicitly unverified.
-- Buyer onboarding, preferences, saved homes, assistant conversation, purchase checklists, editable offer discussion notes, local messages, and notifications.
-- Three seeded transactions, 11 milestones, agent-side milestone controls, assignments, and activity history.
-- Local sample documents, TXT/PDF uploads up to 2 MB, sample download, and acknowledgment.
-- Agent/client workspaces; administrator pipeline, team, illustrative analytics, and configurable fee.
-- Mortgage amortization (including zero-rate loans), mortgage insurance assumption, debt-to-income exploration, and fee comparison.
-- Browser persistence and one-click reset. Three generated illustrations and bundled open-source fonts work without a photo/font host.
+## A complete demo journey
 
-## What is simulated or intentionally not connected
+1. On the homepage click **Try a demo purchase**. Choose one of four fictional homes: a Provo condo, Orem townhome, Springville starter house, or larger Lehi house.
+2. Open **Ask Homebridge AI about this home**. On mobile this is a sticky button that opens the advisor sheet. Answer optional questions about a monthly comfort budget, first-home status, a yard, and preapproval.
+3. Ask about concerns, affordability, price, or offer preparation. Each property has its own conversation and context. The response mode is always labeled. Without live configuration, answers are a **scripted property-aware demo**, not a language model.
+4. Explore **Affordability** and change the down payment, rate, taxes, insurance, HOA, PMI, and closing-cost assumptions. The monthly breakdown and modeled cash requirement update immediately.
+5. Open **Prepare an offer**. Confirm proposed terms one question at a time. Skip unknown answers and edit them later. The assistant cannot silently set terms.
+6. Create the draft package. Preview its six original worksheets and download one or all as a real PDF.
+7. Open **Agent review**. Inspect the shared categories and explicitly approve sharing before clicking **Request agent review**.
+8. Choose **Simulate agent review**, enter the local reviewer simulation, comment, and request changes. Return to **My Purchase** to see the response and next action.
+9. Edit terms, regenerate the package, and request a new review. Earlier review snapshots keep the original answers. Refresh to confirm persistence.
 
-Demo roles are a navigation model, **not authentication or a security boundary**. All data is in local storage on the same browser and origin. A visitor can switch to any demo role. There is no shared server database or private account data, and no cross-device synchronization. Never use the demo for real client documents or sensitive financial data.
+No signatures, real offers, brokerage relationships, tours, actual professional approvals, or external messages are created. Every document is prominently marked **DEMO DRAFT — NOT A VALID PURCHASE AGREEMENT — NOT FOR SUBMISSION**. These are not official Utah REPC forms.
 
-The assistant is a deterministic local guide with supported topics, not a live AI model. Maps are schematic, not navigable geographic basemaps. Listing URLs are not fetched. Email/contact/tour requests are local activity events. Agent profiles and business metrics are fictional. e-signatures, MLS/IDX, live market rates, operational seller services, lender approvals, and real representation are not implemented.
+## Import a listing
 
-Secondary business controls such as workflow-template editing, package management, arbitrary team-member creation, and editable homepage copy are roadmap items. The demo supports the core customer journey, not all features in the full master specification.
+Use **Analyze a home** or the homepage link input. Paste an HTTPS Zillow, Redfin, Realtor.com, or other public website URL. The backend validates the URL and identifies the source. It **never fetches or scrapes the pasted page**.
 
-## Make changes
+If an authorized resolver is not configured or cannot resolve the link, enter known fields and optionally paste the listing description. Only the address is required. Missing details stay unknown. Preview/correct the record, save it, and open its advisor. The original listing link stays visible. User-supplied records, provider-reported facts, fictional demo data, assumptions, and unknowns are distinct.
 
-You can ask Codex to change text, colors, layouts, or features in plain language. Useful files:
+## Main routes
 
-| Change                                                         | File                           |
-| -------------------------------------------------------------- | ------------------------------ |
-| Homepage copy and sections                                     | `components/homepage.tsx`      |
-| Colors, spacing, mobile layouts                                | `app/globals.css`              |
-| Default fee and business assumptions                           | `lib/config.ts`                |
-| Sample properties, transactions, messages, assistant responses | `lib/model.ts`                 |
-| Property cards                                                 | `components/property-card.tsx` |
-| Workspace screens and interactions                             | `components/homebridge.tsx`    |
-| Persistence and integration boundaries                         | `lib/providers.ts`             |
-| Website title and description                                  | `app/layout.tsx`               |
+| Route                                          | Purpose                                                                                   |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `/`                                            | Clear product introduction, listing-link entry, interactive demo links                    |
+| `/import`                                      | Source validation, manual/authorized import, confirmation                                 |
+| `/homes`                                       | Four demo homes or an authorized live provider, filters, sorting, map                     |
+| `/homes/[id]`                                  | Property details, analysis, advisor, preferences, affordability, offer, documents, review |
+| `/my-homes`                                    | Saved/imported/recent homes, conversations, draft offers                                  |
+| `/compare`                                     | Two or three homes with facts, payment assumptions, reasoned fit observations             |
+| `/purchase`                                    | Active preparation, next action, documents, checklist, messages, milestones               |
+| `/agent`                                       | Explicitly labeled reviewer simulation over shared snapshots                              |
+| `/account`                                     | Honest guest/account states, optional sign-in/sync, backup, reset                         |
+| `/pricing`                                     | Adjustable proposed flat-fee comparison with compensation caveats                         |
+| `/how-it-works`, `/integrations`, `/resources` | Process, connection status, education                                                     |
 
-The development server refreshes after saved edits. Existing browser data takes precedence over new seed defaults; reset the demo to see seed/default changes. Admin pricing edits affect only that browser, not everyone visiting the deployed site. For a site-wide default, edit `lib/config.ts` and redeploy.
+Common original `/dashboard/*`, `/login`, and `/get-started` links redirect into the new workflow. Seller functionality and enterprise admin navigation are omitted from this buyer beta.
+
+## What works without credentials
+
+- Four rich fictional property scenarios with HOA/disclosure/maintenance context and explicit provenance.
+- Browsing, ZIP/city/address search, price range, beds/baths, size/type filters, sorting, saving, comparing, and recent homes.
+- Secure URL identification, manual entry with unknown fields, confirmation, original links, and description paste.
+- Per-property scripted conversations, editable buyer discovery, opt-in cross-property preference memory, grounded structured observations.
+- Interactive amortization, monthly cost breakdown, cash-to-close assumptions, and educational budget comparisons.
+- Conversational draft preparation, explicit answer confirmations, autosave, editing, missing-answer tracking, regeneration, six-document previews and PDF downloads.
+- Buyer-approved fixed review snapshots, reviewer comments/revision requests/completion/next steps, buyer messages, personal tasks, and refresh persistence.
+- Guest mode, local backup/reset, and separate storage keys for signed-in accounts.
+
+## Optional integrations: implemented paths, not claimed live connections
+
+| Integration               | Implementation                                                                    | Required to operate                                                                          |
+| ------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| OpenAI                    | Server SDK, structured output, grounded context, no write tools                   | `OPENAI_API_KEY`, authenticated Supabase session, quota migration, per-property consent      |
+| Supabase                  | Real email/Google auth path, server session validation, owner-only workspace sync | Public URL/anon key, supplied SQL migration, callback URLs; Google provider setup for Google |
+| Licensed listings         | RESO/OData search + normalization + field provenance + signed records             | Licensed data rights and the `LISTING_*` settings described in INTEGRATIONS.md               |
+| Authorized URL resolution | Fixed trusted resolver endpoint; no arbitrary URL fetching                        | Licensed resolver compatible with the Home schema and relevant settings                      |
+| Maps                      | MapLibre with OpenStreetMap raster tiles when Map view is selected                | Internet access to OSM tiles; accessible area-link fallback when tiles/WebGL fail            |
+| Draft PDFs                | Server-side `pdf-lib`, embedded bundled fonts                                     | Nothing external                                                                             |
+| Agent review              | Local simulation in the buyer's own workspace                                     | No real professional service is connected                                                    |
+
+No API keys or licensed feed are available in this development environment. Consequently, live LLM responses, actual Supabase login/sync/RLS execution, and live listing access cannot be claimed as tested. Presence of configuration is labeled **configured**, not verified. See [INTEGRATIONS.md](INTEGRATIONS.md) for exact setup and operational limits.
+
+## Persistence and privacy
+
+Guest work uses `homebridge-workspace-v2` in the current browser and origin. Different devices and preview domains have different storage. Original v1 data is left untouched; compatible manually entered homes, the name, and fee can migrate into a fresh v2 guest workspace. Original seeded transactions/conversations are not rewritten into fabricated new workflows.
+
+When configured, a real account uses a separate local key. Account sync is explicit: save the current account copy, load its private cloud copy, or consciously copy guest work into the account. Authenticated server operations derive ownership from the verified session, never a caller-supplied user ID. PostgreSQL RLS rejects other users. Do not upload real financial documents into the prototype.
+
+Review sharing is also explicit. A request stores a fixed property/profile/terms/assumptions/analysis snapshot. Changing current answers does not alter what was already shared. Changes to calculator/profile context invalidate document revisions without changing proposed purchase terms.
 
 ## Checks
 
@@ -90,42 +103,24 @@ npm run build
 npm run test:e2e
 ```
 
-The unit tests cover known mortgage values, zero interest, insurance assumptions, natural-language parsing, data relationships, and storage recovery. Playwright exercises buyer, agent, admin, documents, onboarding, search persistence, and mobile overflow checks.
+Playwright defaults to a development server on **3100**. To test another running server, set `HB_TEST_BASE_URL`, for example `HB_TEST_BASE_URL=http://127.0.0.1:3100 npm run test:e2e`. System Chromium is used if present; otherwise run `npx playwright install chromium`. Linux CI uses `npx playwright install --with-deps chromium`.
 
-Playwright uses system Chromium when available. On a machine without it, run `npx playwright install chromium` first. `CHROMIUM_PATH` can select another Chromium executable. Linux CI can use `npx playwright install --with-deps chromium`.
+Tests cover the mobile buyer journey through an actual downloaded PDF and simulated review, draft editing/snapshots, URL errors and fallback, comparison, guest access restrictions, model behavior without credentials, provenance signatures, storage isolation, and known financial values. External services require separate integration validation.
 
-Production rehearsal: `npm run build`, then `npm start`. Tests default to port 3000. `.github/workflows/ci.yml` runs the checks on GitHub once the code is pushed.
+## Preview deployment — keep production unchanged
 
-## Deploy and get a shareable website address
+The existing Vercel site follows `main`. Do **not** merge this branch or run a production deployment without approval.
 
-The easiest route is a Next.js hosting provider such as Vercel. A provider account and GitHub authorization are required; no application API keys are needed. Check the provider's current terms, usage limits, and plan eligibility for your intended use.
+1. Push `upgrade/property-advisor` to the same repository, leaving `main` untouched.
+2. With the existing Vercel Git integration enabled, that branch should receive a **Preview** deployment. In Vercel, open HomeBridge-prototype → Deployments and select this branch. Branch preview behavior and URL availability must be confirmed in the account.
+3. Keep preview variables empty to test the entire guest demo. Optional integration credentials belong in the **Preview** environment and should point to separate test projects/data.
+4. Open the Vercel-generated preview URL and follow the demo journey above. A generated URL is not assumed or invented by this repository.
+5. After review and explicit approval, merging to the production branch can update the public website.
 
-1. First save this new application's files to your GitHub repository. In the cloud terminal, from `/workspace/HomeBridge-prototype`, run:
+You can keep giving Codex plain-language change requests. To edit defaults directly: brand/fee `lib/config.ts`, property scenarios `lib/homebridge/demo.ts`, screen components `components/beta/`, styling `app/beta.css`, provider settings `.env.example`. Default fee changes affect a new/reset workspace; an existing workspace keeps its local value.
 
-   ```sh
-   git add .
-   git commit -m "Build interactive Homebridge demonstration"
-   git branch -M main
-   git push -u origin main
-   ```
+## Next steps and limits
 
-   These instructions assume the repository is still empty, as it was when this project was created. If someone has since pushed code to `main`, stop and reconcile those changes before pushing. Do not use force push. If Git asks for identity, configure your name/email locally for this repository. If the cloud cannot push, use the interface's code export/download, open the project in a local Git tool such as GitHub Desktop, and publish it to the intended repository.
+Connect a licensed source and a separate test Supabase/OpenAI project; verify multi-user RLS and provider-specific attribution/filters before using real data. Broker-reviewed forms, verified professional identities/assignments, private production documents, e-signatures, real delivery, audited approvals, normalized database entities, production observability, and scalable map infrastructure remain future work. No actual seller services are implemented.
 
-2. Sign in at Vercel with GitHub.
-3. Choose **Add New → Project** and import `brucemarkm/HomeBridge-prototype`.
-4. Keep the Next.js framework preset, repository root directory, and default build settings. Choose Node.js 24 if asked. Leave environment variables empty.
-5. Click **Deploy**. After the build succeeds, Vercel provides a public HTTPS address.
-6. Open that address and test **Explore demo → Buyer**. Send that address to people you want to show the prototype.
-7. Later pushes to the connected branch trigger updated deployments. Browser demo data is separate for each visitor and each domain.
-
-Deployment has not been performed by this implementation. The cloud development server is not a permanent public website. A local CLI deployment is also possible with your own authorized provider account, but no provider credentials have been configured here.
-
-## Optional integrations
-
-**Supabase is not connected.** Connecting it is a separate engineering step: provision a project, implement authenticated server sessions, SQL migrations/foreign keys, per-user and assigned-agent Row Level Security, and private storage policies. Keep service-role credentials server-side. Adding environment variables alone will not enable it.
-
-**OpenAI is not connected.** A future implementation needs a server-only API key, an authenticated server endpoint, a provider implementation, request validation, rate limits, budget/token limits, and professional-review constraints. Do not put keys in frontend code. Until then, the working scripted guide remains free and local.
-
-Authorized MLS/IDX data, email, scheduling, mapping, and signatures require their own providers, permissions, and production review. There are no dormant API calls or hidden paid dependencies.
-
-See `ARCHITECTURE.md`, `PRODUCT_ROADMAP.md`, and `BUSINESS_ASSUMPTIONS.md` for the next stages.
+See ARCHITECTURE.md, INTEGRATIONS.md, BUSINESS_ASSUMPTIONS.md, PRODUCT_ROADMAP.md, and VALIDATION.md.

@@ -8,10 +8,13 @@ import "@fontsource/manrope/500.css";
 import "@fontsource/manrope/600.css";
 import "@fontsource/manrope/700.css";
 import "./globals.css";
+import "./beta.css";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { WorkspaceProvider } from "../components/beta/workspace-provider";
 export const metadata: Metadata = {
   title: "Homebridge · A smarter, simpler way home.",
   description:
-    "Explore a self-contained homebuying demonstration. Fictional Utah County homes, intelligent guidance, and a simpler path home.",
+    "Analyze a home, understand the numbers, prepare proposed offer terms, and try professional review in one buyer-focused workspace.",
 };
 export default function RootLayout({
   children,
@@ -20,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <WorkspaceProvider>{children}</WorkspaceProvider>
+      </body>
     </html>
   );
 }

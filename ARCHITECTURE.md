@@ -1,41 +1,72 @@
-# Architecture
+# Architecture — connected buyer workflow
 
-## Current runtime
+## Existing strengths retained
 
-Next.js App Router serves an optional catch-all route (`app/[[...path]]/page.tsx`) so all documented public, buyer, agent, and admin URLs resolve directly and can be refreshed. `Homebridge` dispatches the route to connected demo screens. `Homepage` and `PropertyCard` are reusable components. Custom responsive CSS provides the visual system; fonts and generated images are served locally. No external runtime request is necessary.
+Next.js App Router, React, strict TypeScript, original Homebridge wordmark/identity, bundled fonts and generated illustrations, proposed fee, responsive design, and the existing repository/deployment structure remain. This upgrade replaces the disconnected route-driven demo shell with modular buyer workflow components; v1 UI/data modules remain as reference and legacy test coverage, not an active second application. The v1 browser key is not deleted.
 
-`lib/model.ts` defines typed records, deterministic seed data, mortgage calculations, criteria parsing, and scripted guidance. `lib/config.ts` holds defaults. `lib/providers.ts` separates the local repository and provider contracts from the interface. Replacing a provider requires implementation work, not just credentials.
+## Modules
 
-The demo repository serializes version-1 state to local storage. Missing, incompatible, or malformed root records restore defaults. Browser quota failures display a message rather than claiming success silently. Uploaded files are stored as data URLs, capped at 2 MB each; large or numerous files may exhaust the browser quota. Reset discards local changes and returns fresh seed objects.
+- `components/beta/`: shell, homepage, discovery/map, import, property workspace/advisor/profile, mortgage, offer wizard, draft viewer, handoff, reviewer simulation, My Homes/comparison, My Purchase, account, and pricing/integrations.
+- `lib/homebridge/schema.ts`: Zod domain and API contracts, bounded input shapes, null for missing property fields, provenance.
+- `demo.ts`: four differentiated fictional scenarios and fresh guest state.
+- `finance.ts`, `analysis.ts`: deterministic amortization and grounded observations/scripted response provider. No invented comparables or fit scores.
+- `documents.ts`: one shared original six-document representation used by both HTML preview and PDF export.
+- `workflow.ts`: context changes invalidate document revisions without rewriting proposed terms.
+- `storage.ts`: versioned guest/account browser persistence and compatible v1 imports.
+- `server/listings.ts`, `import.ts`: RESO provider abstraction, normalization, fixed authorized resolver, URL security.
+- `server/ai.ts`: server-held OpenAI key, structured output, grounded calculation context and prompt-injection boundaries.
+- `server/auth.ts`, `auth-client.ts`: established Supabase SSR/PKCE clients; server-verified identities.
+- `server/provenance.ts`: HMAC binding of provider records; tampered/expired client facts are not accepted as provider-reported model context.
+- `server/http.ts`: same-origin checks compatible with host/proxy routing, custom request header, streamed size limits, validated JSON, safe API errors, bounded per-instance burst limiting.
 
-Property searches initiated from the homepage encode criteria in the URL. Purchase selection is persisted with transaction records. Browser-only state is restored after hydration, so the server never reads browser storage. Public pages have seeded server-rendered content; workspaces show a short restore state while loading local data.
+A root `WorkspaceProvider` preserves client state across Next route changes and explicitly isolates guest and per-user storage keys. Public pages can render seed content; property-specific persisted content waits for browser restoration. Async connection status loads once; unavailable services do not erase local work. Production never sees a secret through a `NEXT_PUBLIC_*` variable; the Supabase public anon key is intentionally public and requires RLS.
 
-## Data relationships
+## Route/API contracts
 
-- `Property.id` is referenced by saved IDs, comparison IDs, and `Transaction.propertyId`.
-- Transactions carry a fictional buyer, assigned demo agent, stage index, completed personal tasks, closing target, and offer worksheet.
-- The shared demo conversation demonstrates buyer/agent messaging in one browser.
-- Documents and activity are workspace-wide demo records; they are not private transaction files.
-- The fee default comes from config, then can be overridden in local demo settings.
+| Endpoint                 | Contract                                                                                                                |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/config`        | Non-secret configured flags and verified current account identity; no-store                                             |
+| `GET /api/listings`      | Bounded search filters → normalized licensed provider records, or explicit not-connected state                          |
+| `POST /api/import`       | Validated public listing URL → authorized normalized record or honest manual-entry fallback                             |
+| `POST /api/assistant`    | One property's facts, consented preferences/assumptions, bounded conversation → schema-validated live/scripted response |
+| `POST /api/pdf`          | Validated property/draft/profile/assumptions → original, labeled PDF bytes; no persistence or external upload           |
+| `GET/PUT /api/workspace` | Verified session → owner's RLS-protected JSON workspace only                                                            |
+| `GET /auth/callback`     | Real provider authorization code exchange; no fake sign-in                                                              |
 
-There is no SQL database, authentication, production user isolation, RLS migration, real audit trail, or backend authorization in this local prototype. UI role guards organize fictional content and require explicit switching to agent/admin areas. They cannot protect real data. Local history is editable browser state and is not a legally reliable audit log.
+No endpoint accepts a caller-selected owner ID. There is no endpoint to send an offer, contact a seller, transfer money, sign a form, or mark an actual agreement executed.
 
-## Business calculations
+## Data model and evolution
 
-Mortgage principal and interest use the standard fixed-rate amortization formula, with a separate zero-interest branch. Estimated total payment adds annual tax/insurance divided by 12, HOA, and an illustrative 0.5% annual mortgage-insurance assumption when down payment is below 20%. These are inputs, not live lending terms.
+Current validated domain entities support:
 
-The fee tool separates comparison compensation, proposed Homebridge fee, seller contribution to that fee, and hypothetical concessions. The fee difference is never described as an automatic cash refund. No actual lender eligibility or concession cap has been established.
+| Concept                          | Current representation / next normalized entity                                        |
+| -------------------------------- | -------------------------------------------------------------------------------------- |
+| Users                            | Supabase `auth.users`, verified session                                                |
+| BuyerProfiles                    | Per-property preferences, optional cross-property memory; `buyer_profiles` / workspace |
+| Properties / ListingSources      | Normalized `Home`, source URL, provider, per-field provenance, data signature          |
+| SavedHomes                       | Property ID references in owner's workspace                                            |
+| PropertyAnalyses                 | Grounded observations computed from facts/profile/assumptions; snapshot at handoff     |
+| ChatConversations / ChatMessages | Bounded message arrays keyed by property ID                                            |
+| OfferDrafts                      | Confirmed terms, current question, revision, generated revision, timestamps            |
+| DraftDocuments                   | Six deterministic sections / PDF bytes on request; no private uploaded blobs           |
+| ReviewRequests                   | Buyer-approved immutable context and proposed-term snapshots, statuses/history         |
+| AgentComments                    | Explicit local reviewer/buyer messages within each request                             |
+| PurchaseMilestones               | Preparation/review status, personal checklist, target closing date                     |
 
-## Future production boundaries
+The migration implements owner-isolated `buyer_workspaces` JSONB, optional `buyer_profiles`, and durable quota tables. This is a pragmatic beta persistence adapter, **not a claim that every future entity already has a normalized SQL table**. The Zod contracts and ID relationships define the next normalization boundary. Move properties, conversations/messages, drafts/documents, review requests/comments, participants, and milestones into relational tables when adding real multi-party collaboration; preserve existing IDs and snapshot semantics.
 
-A production adapter must introduce authenticated server requests and authorization on every operation, using stable user IDs and assigned-agent relations. Add proper tables and foreign keys for profiles/roles, preferences, properties/images, saves/comparisons/imports, transactions/tasks/stage histories, agent assignments, conversations/participants/messages, notifications, documents, pricing settings, and audit events. Supabase is an option, not installed infrastructure.
+## Authorization and professional review
 
-Before real client use: implement and test database migrations, deny-by-default RLS, private document storage and signed access, session security, upload validation/scanning, retention controls, and server-authorized professional actions. A real provider must preserve the difference between buyer checklist actions and professionally confirmed contract milestones.
+Guest and reviewer simulation operate over local data. The reviewer switch is not authentication, verified licensing, or access to another user's account. With Supabase configured, authenticated sync is protected both by `auth.getUser()` and owner-only RLS; users cannot choose another owner's row. Live AI quota consumption is tied to that same verified identity and enforced atomically in PostgreSQL.
 
-An AI provider needs an authenticated server endpoint, server-held key, grounded property/transaction context, input limits, rate/cost limits, and clear fallback states. `AssistantProvider` currently supports only the local scripted mode; a live mode must explicitly extend this contract. Never call a model with client-exposed credentials.
+Actual professionals, verified credentials/brokerage affiliation, role assignments, agent-client membership, private shared document storage, and server-authorized real review actions are not implemented. They must be added before genuine professional collaboration. Never treat the local status history as an immutable production audit trail.
 
-`AuthorizedListingProvider` defines a future authorized URL-import boundary. It has no current implementation and no scraper. Likewise, `MessageTransport` marks a future delivery boundary; local messages never leave the browser. A real geographic map, signatures, emails, and brokerage procedures remain separate integrations.
+A review request copies the property, confirmed terms, relevant preferences, calculator assumptions, analysis, and document revision only after the buyer approves. Later changes create a different revision and require regeneration/re-sharing. Old snapshots remain fixed; reviewer comments/status history persist. No legally operative agreement exists.
 
-## Validation
+## Reliability and limits
 
-Node's test runner through `tsx` covers business rules and storage behavior. Playwright runs full browser journeys with isolated contexts, checks persistence, role navigation, editable transactions, messages, documents, fee settings, reset, onboarding, and mobile layout. Production build and strict TypeScript are required. CI uses a real Chromium browser.
+Rate limits and body caps bound API work. Live AI additionally requires persistent daily request quotas and an authenticated/consented session; it fails closed when quotas cannot be checked. Model timeouts/errors switch explicitly to scripted mode. Financial calculations are deterministic and provided to the model. No model write tools exist.
+
+Provider base/resolver/image hosts are explicit allowlists; user listing URLs are never direct fetch targets. Redirects are rejected. Different resolver hosts require separate credentials. Unknown fields remain null, and no active feed is implied by fixtures or configuration presence.
+
+Tests cover financial known values, URL/SSRF validation, source normalization/signatures, malformed storage and account isolation, deterministic analysis, request-origin/body behavior, real PDF bytes, and mobile/desktop end-to-end workflows. External identity, live model output, MLS licensing, and multi-user RLS operation require separate configured tests. See VALIDATION.md for actual results.
