@@ -4,6 +4,14 @@
 
 Built on the existing Next.js / React / strict TypeScript project, preserving the Homebridge identity, bundled fonts, and architectural imagery. No production deployment is performed by this upgrade. Work is on `upgrade/property-advisor`, not `main`.
 
+## Hosted branch preview
+
+Vercel's GitHub check supplied this branch preview URL:
+
+**https://home-bridge-prototype-git-upgrade-property-advisor-brucemarkm.vercel.app/**
+
+Start with **Try a demo purchase → Springville**. The guest journey needs no API keys. The restricted cloud workspace cannot open Vercel domains directly, so hosted availability/protection must be checked in your browser. This is the upgrade branch preview; the original production branch remains unchanged.
+
 ## See and try the upgrade
 
 ```sh

@@ -43,3 +43,11 @@ No live provider credentials were available. Actual Supabase email/Google delive
 Real licensed-agent identities/assignments, approved legal forms, actual offer submission, external messaging, e-signatures, and seller functionality are not implemented. Reviewer switching is a local simulation, not a real role-based professional service.
 
 GitHub branch push and any Vercel Preview outcome must be reported separately after their actual results. A local production build is not evidence of a hosted deployment.
+
+## Branch / hosting evidence
+
+- Upgrade code was pushed to `upgrade/property-advisor` at `e53c8ab4765bb6d055d1f82763bbee1ad81a1277`.
+- Remote `main` remains `673584952f1c95bd92ee6ecd3affe1eee15750c3`; no merge or production deployment was requested or performed.
+- GitHub Actions run `https://github.com/brucemarkm/HomeBridge-prototype/actions/runs/42909815249` reported **Success** for the upgrade commit.
+- Vercel's public GitHub check linked feedback for the actual branch preview host `home-bridge-prototype-git-upgrade-property-advisor-brucemarkm.vercel.app`.
+- Direct verification of that hosted URL from this workspace was blocked by the cloud egress proxy (CONNECT 403), not an observed application response. Local production-build validation remains the runtime evidence; hosted availability and any Vercel sign-in protection are not independently verified here.
